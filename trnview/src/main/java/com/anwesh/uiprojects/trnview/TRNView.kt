@@ -8,8 +8,32 @@ import android.view.View
 import android.content.Context
 import android.view.MotionEvent
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
+
+fun Canvas.drawTriNode(i: Int, scale : Float, paint : Paint) {
+    paint.color = Color.parseColor("#0097A7")
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    val gap : Float = w / nodes
+    val size : Float = gap / 5
+    val sc1 : Float = Math.min(0.5f, scale) * 2
+    val sc2 : Float = Math.min(0.5f, Math.max(0f, scale - 0.5f)) * 2
+    val factor : Int = 1 - 2 * (i % 2)
+    save()
+    translate(i * gap + gap/2, h/2)
+    rotate(90f * sc1 * factor)
+    save()
+    translate(0f, sc2 * h/2)
+    val path : Path = Path()
+    path.moveTo(-size, -size)
+    path.lineTo(size, 0f)
+    path.lineTo(-size, size)
+    drawPath(path, paint)
+    restore()
+    restore()
+}
 
 val nodes : Int = 5
 
