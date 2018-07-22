@@ -145,4 +145,28 @@ class TRNView(ctx : Context) : View(ctx) {
         }
 
     }
+
+    data class LinkedTRNNode(var i : Int) {
+
+        private var curr : TRNNode = TRNNode(0)
+
+        private var dir : Int = 1
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            curr.draw(canvas, paint)
+        }
+
+        fun update(stopcb : (Int, Float) -> Unit)  {
+            curr.update {i, scale ->
+                curr = curr.getNext(dir) {
+                    dir *= -1
+                }
+                stopcb(i, scale)
+            }
+        }
+
+        fun startUpdating(startcb : () -> Unit) {
+            curr.startUpdating(startcb)
+        }
+    }
 }
