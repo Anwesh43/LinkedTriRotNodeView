@@ -4,6 +4,7 @@ package com.anwesh.uiprojects.trnview
  * Created by anweshmishra on 22/07/18.
  */
 
+import android.app.Activity
 import android.view.View
 import android.content.Context
 import android.view.MotionEvent
@@ -193,6 +194,15 @@ class TRNView(ctx : Context) : View(ctx) {
             linkedTRN.startUpdating {
                 animator.start()
             }
+        }
+    }
+
+    companion object {
+
+        fun create(activity : Activity) : TRNView  {
+            val view : TRNView = TRNView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }
