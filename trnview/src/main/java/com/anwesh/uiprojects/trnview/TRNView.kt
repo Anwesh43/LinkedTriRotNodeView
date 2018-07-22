@@ -76,4 +76,49 @@ class TRNView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    data class TRNNode(var i : Int, val state : State = State()) {
+
+        var next : TRNNode? = null
+
+        var prev : TRNNode? = null
+
+        init {
+            addNeighbor()
+        }
+
+        fun addNeighbor() {
+            if (i < nodes - 1) {
+                next = TRNNode(i + 1)
+                next?.prev = this
+            }
+        }
+
+        fun update(stopcb : (Int, Float) -> Unit) {
+            state.update {
+                stopcb(i, it)
+            }
+        }
+
+        fun startUpdating(startcb : () -> Unit) {
+            state.startUpdating(startcb)
+        }
+
+        fun getNext(dir : Int, cb : () -> Unit) : TRNNode {
+            var curr : TRNNode? = prev
+            if (dir == 1) {
+                curr = next
+            }
+            if (curr != null) {
+                return curr
+            }
+            cb()
+            return this
+        }
+
+        fun draw(canvas : Canvas, paint : Paint) {
+
+        }
+
+    }
 }
