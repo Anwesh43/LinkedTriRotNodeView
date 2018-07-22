@@ -141,7 +141,7 @@ class TRNView(ctx : Context) : View(ctx) {
         }
 
         fun draw(canvas : Canvas, paint : Paint) {
-
+            canvas.drawTriNode(i, state.scale, paint)
         }
 
     }
