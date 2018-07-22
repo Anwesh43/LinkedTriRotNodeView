@@ -26,7 +26,7 @@ fun Canvas.drawTriNode(i: Int, scale : Float, paint : Paint) {
     translate(i * gap + gap/2, h/2)
     rotate(90f * sc1 * factor)
     save()
-    translate(0f, sc2 * h/2)
+    translate(sc2 * (h/2 + size), 0f)
     val path : Path = Path()
     path.moveTo(-size, -size)
     path.lineTo(size, 0f)
@@ -37,6 +37,7 @@ fun Canvas.drawTriNode(i: Int, scale : Float, paint : Paint) {
 }
 
 val nodes : Int = 5
+val DELAY : Long = 60
 
 class TRNView(ctx : Context) : View(ctx) {
 
@@ -82,7 +83,7 @@ class TRNView(ctx : Context) : View(ctx) {
             if (animated) {
                 cb()
                 try {
-                    Thread.sleep(50)
+                    Thread.sleep(DELAY)
                     view.invalidate()
                 } catch(ex : Exception) {
 
@@ -145,6 +146,7 @@ class TRNView(ctx : Context) : View(ctx) {
 
         fun draw(canvas : Canvas, paint : Paint) {
             canvas.drawTriNode(i, state.scale, paint)
+            next?.draw(canvas, paint)
         }
 
     }
