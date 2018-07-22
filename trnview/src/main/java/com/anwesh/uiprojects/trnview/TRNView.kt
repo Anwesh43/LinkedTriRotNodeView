@@ -169,4 +169,28 @@ class TRNView(ctx : Context) : View(ctx) {
             curr.startUpdating(startcb)
         }
     }
+
+    data class Renderer(var view : TRNView) {
+
+        private val linkedTRN : LinkedTRNNode = LinkedTRNNode(0)
+
+        private val animator : Animator = Animator(view)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#BDBDBD"))
+            linkedTRN.draw(canvas, paint)
+            animator.animate {
+                linkedTRN.update {i, scale ->
+                    animator.stop()
+                }
+
+            }
+        }
+
+        fun handleTap() {
+            linkedTRN.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
