@@ -41,12 +41,18 @@ val DELAY : Long = 60
 
 class TRNView(ctx : Context) : View(ctx) {
 
+    var onAnimationListener : OnAnimationListener? = null
+
     private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     private val renderer : Renderer = Renderer(this)
 
     override fun onDraw(canvas : Canvas) {
         renderer.render(canvas, paint)
+    }
+
+    fun addOnAnimationListener(onComplete : (Int) -> Unit, onReset : (Int) -> Unit) {
+        onAnimationListener = OnAnimationListener(onComplete, onReset)
     }
 
     override fun onTouchEvent(event : MotionEvent): Boolean {
@@ -187,6 +193,10 @@ class TRNView(ctx : Context) : View(ctx) {
             animator.animate {
                 linkedTRN.update {i, scale ->
                     animator.stop()
+                    when (scale) {
+                        0f -> view.onAnimationListener?.onReset?.invoke(i)
+                        1f -> view.onAnimationListener?.onComplete?.invoke(i)
+                    }
                 }
 
             }
@@ -207,4 +217,6 @@ class TRNView(ctx : Context) : View(ctx) {
             return view
         }
     }
+
+    data class OnAnimationListener(var onComplete : (Int) -> Unit, var onReset : (Int) -> Unit)
 }
